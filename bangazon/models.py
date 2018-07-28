@@ -3,14 +3,24 @@ from datetime import date
 
 # Create your models here.
 class Department(models.Model):
+    """ """
     department_name = models.CharField(max_length=30)
-    budget = models.DecimalField(max_digits=None, decimal_places=2)
+    budget = models.DecimalField(max_digits=20, decimal_places=2)
 
 class Computer(models.Model):
+    """ """
     purchase_date = models.DateField()
     decommission_date = models.DateField()
 
+class Training(models.Model):
+    """ """
+    course_title = models.CharField(max_length=30)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    max_attendance = models.IntegerField()
+
 class Employee(models.Model):
+    """ """
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     title = models.CharField(max_length=30)
@@ -23,3 +33,4 @@ class Employee(models.Model):
         Computer,
         on_delete=models.CASCADE
         )
+    training = models.ManyToManyField(Training)
