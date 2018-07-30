@@ -72,7 +72,7 @@ class PayType(models.Model):
 class PaymentType(models.Model):
     """ Model represents a customer payment account """
     account_number = models.IntegerField()
-    paytype = models.OneToOneField(
+    pay_type = models.OneToOneField(
         PayType,
         on_delete = models.CASCADE
         )
@@ -97,7 +97,7 @@ class Product(models.Model):
     product_description = models.CharField(max_length=30)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     quantity = models.SmallIntegerField()
-    producttype = models.OneToOneField(
+    product_type = models.OneToOneField(
         ProductType,
         on_delete = models.CASCADE
         )
@@ -126,12 +126,12 @@ class Order(models.Model):
         Customer, 
         on_delete=models.CASCADE
         )
-    paymenttype = models.ForeignKey(
+    payment_type = models.ForeignKey(
         PaymentType,
         on_delete=models.CASCADE,
         blank=True
         )
-    shoppingCart = models.OneToOneField(
+    shopping_cart = models.OneToOneField(
         ShoppingCart,
         on_delete=models.CASCADE
         )
