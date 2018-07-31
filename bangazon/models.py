@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 
+
 # Create your models here.
 class Department(models.Model):
     """ Model represents an employee department """

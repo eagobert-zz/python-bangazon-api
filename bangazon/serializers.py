@@ -1,57 +1,60 @@
 from rest_framework import serializers
-from . models import Department, Computer, Training, Employee, Customer, PayType, PaymentType,ProductType, Product, ShoppingCart, Order
+from . import models
 
-class DepartmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields = ('department_name', 'budget')
 
-class ComputerSerializer(serializers.ModelSerializer):
+class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Computer
-        fields = ('model_name', 'purchase_date', 'decommission_date')
+        model = models.Department
+        fields = ('id','url','department_name', 'budget')
 
-class TrainingSerializer(serializers.ModelSerializer):
+class ComputerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Training
-        fields = ('course_title', 'start_date', 'end_date', 'max_attendance')
+        model = models.Computer
+        fields = ('id','url','model_name', 'purchase_date', 'decommission_date')
 
-class EmployeeSerializer(serializers.ModelSerializer):
+class TrainingSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Employee
-        fields = ('first_name', 'last_name', 'title', 'supervisor', 'department', 'computer', 'training')
+        model = models.Training
+        fields = ('id','url','course_title', 'start_date', 'end_date', 'max_attendance')
 
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ('first_name', 'last_name', 'company_name', 'create_date', 'active')
+class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+    # training = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
-class PayTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PayType
-        fields = ('brand_name')
+        model = models.Employee
+        fields = ('id','url','first_name', 'last_name', 'title', 'supervisor', 'department', 'computer', 'training')
 
-class PaymentTypeSerializer(serializers.ModelSerializer):
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = PaymentType
-        fields = ('account_number', 'pay_type', 'customer')
+        model = models.Customer
+        fields = ('id','url','first_name', 'last_name', 'company_name', 'create_date', 'active')
 
-class ProductTypeSerializer(serializers.ModelSerializer):
+class PayTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ProductType
-        fields = ('type')
+        model = models.PayType
+        fields = ('id','url','brand_name')
 
-class ProductSerializer(serializers.ModelSerializer):
+class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Product
-        fields = ('product_title', 'product_description', 'price', 'quantity', 'product_type', 'customer')
+        model = models.PaymentType
+        fields = ('id','url','account_number', 'pay_type', 'customer')
 
-class ShoppingCartSerializer(serializers.ModelSerializer):
+class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ShoppingCart
-        fields = ('product', 'quantity')
+        model = models.ProductType
+        fields = ('id','url','type')
 
-class OrderSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Order
-        fields = ('customer', 'payment_type', 'shopping_cart')
+        model = models.Product
+        fields = ('id','url','product_title', 'product_description', 'price', 'quantity', 'product_type', 'customer')
+
+class ShoppingCartSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.ShoppingCart
+        fields = ('id','url','product', 'quantity')
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Order
+        fields = ('id','url','customer', 'payment_type', 'shopping_cart')
