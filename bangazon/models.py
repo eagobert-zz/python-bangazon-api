@@ -44,10 +44,23 @@ class Employee(models.Model):
         Computer,
         on_delete=models.CASCADE
         )
-    training = models.ManyToManyField(Training)
+    training = models.ManyToManyField(
+        Training,
+        through='EmployeeTraining')
 
     def __str__(self):
         return "Employee Name: {0} {1}, Title: {2}, Department: {3}".format(self.first_name, self.last_name, self.title, self.department)
+
+class EmployeeTraining(models.Model):
+    """ Model represents employee training"""
+    employee = models.ForeignKey(
+        Employee,
+        on_delete = models.CASCADE
+        )
+    training = models.ForeignKey(
+        Training,
+        on_delete = models.CASCADE
+        )
 
 class Customer(models.Model):
     """ Model represents a customer """
@@ -61,14 +74,17 @@ class Customer(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Customer Name: {self.first_name} {self.last_name}, Company: {self.company_name}"
+        if self.company_name == '':
+            return f"{self.first_name} {self.last_name}"
+        else:
+            return f"{self.company_name}"
 
 class PayType(models.Model):
     """ Model represents the name of a payment type """
     brand_name = models.CharField(max_length=15)
 
     def __str__(self):
-        return "Pay Type: %s" % self.brand_name
+        return self.brand_name
 
 class PaymentType(models.Model):
     """ Model represents a customer payment account """
@@ -83,14 +99,14 @@ class PaymentType(models.Model):
         )
 
     def __str__(self):
-        return "Customer's Payment Type: %s" % self.account_number
+        return self.account_number
 
 class ProductType(models.Model):
     """ Model represents a product type """
     type = models.CharField(max_length=15)
 
     def __str__(self):
-        return "Product Type: %s" % self.type
+        return self.type
 
 class Product(models.Model):
     """ Model represents a product """
@@ -108,18 +124,8 @@ class Product(models.Model):
         )
     
     def __str__(self):
-        return f"Product Title: {self.product_title}, Seller: {self.customer}, Quantity Available: {self.quantity}"
+        return f"{self.product_title}"
 
-class ShoppingCart(models.Model):
-    """ Model represents a shopping cart of products """
-    product = models.ForeignKey(
-        Product,
-        on_delete = models.CASCADE
-        )
-    quantity = models.SmallIntegerField()
-
-    def __str__(self):
-        return f"Added to Cart: {Product.product_title}, price {Product.price}, items {self.quantity}"
 
 class Order(models.Model):
     """ Model represents a customer's order """
@@ -132,10 +138,21 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         blank=True
         )
-    shopping_cart = models.OneToOneField(
-        ShoppingCart,
-        on_delete=models.CASCADE
+    product = models.ManyToManyField(
+        Product,
+        through='OrderProduct'
         )
 
     def __str__(self):
         return f"Customer Name: {Customer.first_name} {Customer.last_name}, Company: {Customer.company_name}, Payment Type: {PayType.brand_name}"
+
+class OrderProduct(models.Model):
+    """ Model represents a line items in an order """
+    product = models.ForeignKey(
+        Product,
+        on_delete = models.CASCADE
+        )
+    order = models.ForeignKey(
+        Order,
+        on_delete = models.CASCADE
+    )

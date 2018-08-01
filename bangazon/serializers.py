@@ -49,12 +49,17 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Product
         fields = ('id','url','product_title', 'product_description', 'price', 'quantity', 'product_type', 'customer')
 
-class ShoppingCartSerializer(serializers.HyperlinkedModelSerializer):
+class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = models.ShoppingCart
-        fields = ('id','url','product', 'quantity')
+        model = models.OrderProduct
+        fields = ('id','url','product', 'order')
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Order
         fields = ('id','url','customer', 'payment_type', 'shopping_cart')
+
+class EmployeeTrainingSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.EmployeeTraining
+        fields = ('id','url','employee', 'training')

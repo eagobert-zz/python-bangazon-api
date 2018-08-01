@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Customer, Product, PaymentType, Order, ProductType, Employee, Department, Computer, Training
-from .serializers import CustomerSerializer, ProductSerializer, PaymentTypeSerializer, OrderSerializer, ProductTypeSerializer, EmployeeSerializer, DepartmentSerializer, ComputerSerializer, TrainingSerializer
+from .models import Customer, Product, PaymentType, Order, ProductType, Employee, Department, Computer, Training, OrderProduct, EmployeeTraining
+from .serializers import CustomerSerializer, ProductSerializer, PaymentTypeSerializer, OrderSerializer, ProductTypeSerializer, EmployeeSerializer, DepartmentSerializer, ComputerSerializer, TrainingSerializer, OrderProductSerializer, EmployeeTrainingSerializer
 import datetime
 
 
@@ -31,6 +31,12 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
 
+class OrderProductViewSet(viewsets.ModelViewSet):
+    """ API endpoint to GET, POST, PUT, DELETE Order line items """
+    queryset = OrderProduct.objects.all()
+    serializer_class = OrderProductSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
+
 class ProductTypeViewSet(viewsets.ModelViewSet):
     """ API endpoint to GET, POST, PUT, DELETE Product Types """
     queryset = ProductType.objects.all()
@@ -41,6 +47,12 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     """ API endpoint to GET, POST, PUT Employees """
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    http_method_names = ['get', 'post', 'put']
+
+class EmployeeTrainingViewSet(viewsets.ModelViewSet):
+    """ API endpoint to GET, POST, PUT Employee Trainings """
+    queryset = EmployeeTraining.objects.all()
+    serializer_class = EmployeeTrainingSerializer
     http_method_names = ['get', 'post', 'put']
 
 class DepartmentViewSet(viewsets.ModelViewSet):
